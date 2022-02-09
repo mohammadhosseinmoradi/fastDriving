@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <title>Fast Driving</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @font-face {
+            font-family: "fast-driving";
+            src: url("assets/graphic/f01.ttf");
+        }
+
+        * {
+            font-family: fast-driving;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        #game {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 1);
+        }
+
+        #r1, #r2 {
+            position: absolute;
+            width: 100%;
+            height: auto;
+        }
+
+        #r1 {
+            top: 0;
+        }
+
+        #r2 {
+        }
+
+        #c, #e1, #e2 {
+            position: absolute;
+        }
+
+        #goLeft, #goRight {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            background-color: rgba(0, 13, 255, 0.8);
+            border-radius: 100%;
+            border: none;
+            color: white;
+            transition: 0.2s ease;
+            font-size: 1.2em;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #goLeft {
+            bottom: 10%;
+            left: 10px;
+        }
+
+        #goRight {
+            bottom: 10%;
+            right: 10px;
+        }
+
+        #goLeft:hover, #goRight:hover {
+            background-color: orangered;
+            transform: scale(1.5);
+        }
+
+        #goLeft:focus, #goRight:focus {
+            outline: none;
+        }
+
+        #info-box {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            min-width: 300px;
+            transform: translate(-50%, 0);
+            background-color: rgba(255, 60, 0, 0.8);
+            z-index: 1;
+            text-align: center;
+            color: white;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            font-size: 1.2em;
+            transition: 0.3s ease;
+            margin: 5px;
+            border-radius: 10px;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="info-box">داره میاد</div>
+<div id="game">
+    <img id="r1" src="assets/graphic/r1.jpg" alt="Road">
+    <img id="r2" src="assets/graphic/r1.jpg" alt="Road">
+    <img id="e1" src="assets/graphic/e2.png" alt="e1">
+    <img id="e2" src="assets/graphic/e2.png" alt="e2">
+    <img id="c" src="assets/graphic/c1.png" alt="My Car">
+    <button onclick="goLeft()" id="goLeft">چپ</button>
+    <button onclick="goRight()" id="goRight">راست</button>
+</div>
+
+
+<script>
+
+    class MotionElement {
+        element;
+
+        constructor(element) {
+            this.element = element;
+        }
+
+        setX(x) {
+            this.element.style.left = x + "px";
+        }
+
+        setY(y) {
+            this.element.style.top = y + "px";
+        }
+
+        getX() {
+            return this.element.offsetLeft;
+        }
+
+        getY() {
+            return this.element.offsetTop;
+        }
+
+    }
+
+    class TransformObject {
+        bufferX = 0;
+        bufferY = 0;
+        stepX = 0;
+        stepY = 0;
+        updateX = 0;
+        updateY = 0;
+        speed = 10;
+        id;
+        timer = false;
+        motionElement;
+
+        constructor(motionElement, id) {
+            this.motionElement = motionElement;
+            this.id = id;
+        }
+
+        setSpeed(speed, id) {
+            if (this.id === id)
+                this.speed = speed;
+        }
+
+        getID() {
+            return this.id;
+        }
+
+        frame() {
+            this.stepX = this.updateX / 100.0;
+            this.stepY = this.updateY / 100.0;
+
+
+            for (let i = 0; i <= this.speed; i++) {
+                if (this.updateX !== 0 || this.updateY !== 0) {
+
+                    this.bufferX += this.stepX;
+                    this.bufferY += this.stepY;
+
+
+                    this.motionElement.setX(this.motionElement.getX() + parseInt(this.bufferX.toString()));
+                    this.motionElement.setY(this.motionElement.getY() + parseInt(this.bufferY.toString()));
+
+
+                    this.updateX -= parseInt(this.bufferX.toString());
+                    this.updateY -= parseInt(this.bufferY.toString());
+
+                    this.bufferX -= parseInt(this.bufferX.toString());
+                    this.bufferY -= parseInt(this.bufferY.toString());
+
+                } else {
+                    this.timer = false;
+                }
+            }
+        }
+
+        getTimer() {
+            return this.timer;
+        }
+
+        translate(updateX, updateY) {
+            this.updateX += updateX;
+            this.updateY += updateY;
+            this.timer = true;
+            this.frame();
+        }
+
+    }
+
+    class Transforms {
+        index = 0;
+        TransformObjects;
+
+        constructor(maxLength) {
+            this.TransformObjects = new Array(maxLength);
+        }
+
+        addTransformObject(motionElement, id) {
+            if (this.index < this.TransformObjects.length) {
+                this.TransformObjects[this.index++] = new TransformObject(motionElement, id);
+            }
+        }
+
+        setSpeed(speed, id) {
+            for (let i = 0; i < this.index; i++) {
+                this.TransformObjects[i].setSpeed(speed, id);
+            }
+        }
+
+        translate(updateX, updateY) {
+            for (let i = 0; i < this.index; i++) {
+                this.TransformObjects[i].translate(updateX, updateY);
+            }
+        }
+
+        translateByID(updateX, updateY, id) {
+            for (let i = 0; i < this.index; i++) {
+                if (this.TransformObjects[i].getID() === id)
+                    this.TransformObjects[i].translate(updateX, updateY);
+            }
+        }
+
+        runPerFrame() {
+            for (let i = 0; i < this.index; i++) {
+                if (this.TransformObjects[i].getTimer()) {
+                    this.TransformObjects[i].frame();
+                }
+            }
+        }
+    }
+
+    let gameBar = document.getElementById("game");
+    let car = document.getElementById("c");
+    let r1 = document.getElementById("r1");
+    let r2 = document.getElementById("r2");
+    let e1 = document.getElementById("e1");
+    let e2 = document.getElementById("e2");
+
+    let infoBox = document.getElementById("info-box");
+
+
+    let motionCar = new MotionElement(car);
+    let motionR1 = new MotionElement(r1);
+    let motionR2 = new MotionElement(r2);
+    let motionE1 = new MotionElement(e1);
+    let motionE2 = new MotionElement(e2);
+
+    let ts = new Transforms(5);
+    ts.addTransformObject(motionCar, "car");
+    ts.addTransformObject(motionR1, "r1");
+    ts.addTransformObject(motionR2, "r2");
+    ts.addTransformObject(motionE1, "e1");
+    ts.addTransformObject(motionE2, "e2");
+
+    runPerFrame();
+
+    function runPerFrame() {
+        ts.runPerFrame();
+        setTimeout(runPerFrame, 1);
+    }
+
+    let replace = false;
+
+    let speedStep = 10;
+    let counter = 1000;
+    function run() {
+        ts.translateByID(0, -speedStep, "car");
+        ts.translate(0, speedStep);
+
+        if (motionR1.getY() >= window.innerHeight) {
+            motionR1.setY(motionR2.getY() - r1.offsetHeight + 10);
+        }
+        if (motionR2.getY() >= window.innerHeight) {
+            motionR2.setY(motionR1.getY() - r2.offsetHeight + 10);
+        }
+
+        // enemy initials
+        let random = Math.floor(Math.random() * 25);
+
+        if (random === 10) {
+            if (motionE1.getY() > window.innerHeight + 1000) {
+                let random2 = Math.floor(Math.random() * 10);
+                //center
+                if (random2 === 5) {
+                    motionE1.setX(getCenterPositionForCar(e1));
+                    motionE1.setY(-e1.offsetHeight - 1000);
+                    showInfo();
+                }
+                //left
+                if (random2 === 2) {
+                    motionE1.setX(getLeftPositionForCar(e1));
+                    motionE1.setY(-e1.offsetHeight - 1000);
+                    showInfo();
+                }
+                //right
+                if (random2 === 7) {
+                    motionE1.setX(getRightPositionForCar(e1));
+                    motionE1.setY(-e1.offsetHeight - 1000);
+                    showInfo();
+                }
+            }
+        }
+
+        counter--;
+        setTimeout(run, 1);
+    }
+
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        setTimeout(initials, 1000);
+    });
+
+    function showInfo() {
+        infoBox.style.opacity = "1";
+        setTimeout(hideInfo, 2000);
+    }
+
+    function hideInfo() {
+        infoBox.style.opacity = "0";
+    }
+
+    function initials() {
+        gameBar.style.height = window.innerHeight + "px";
+
+        r2.style.top = -r2.offsetHeight + 10 + "px";
+
+        car.style.width = gameBar.offsetWidth / 5 + "px";
+        car.style.top = window.innerHeight - (8 / (100 / window.innerHeight)) - (car.offsetHeight) + "px";
+        motionCar.setX(getCenterPositionForCar(car));
+
+
+        e1.style.width = gameBar.offsetWidth / 5 + 30 + "px";
+        e2.style.width = gameBar.offsetWidth / 5 + 30 + "px";
+        motionE1.setY(window.innerHeight);
+        motionE2.setY(window.innerHeight);
+
+        run();
+    }
+
+    function getCenterPositionForCar(element) {
+        return (window.innerWidth / 2) - element.offsetWidth / 2 - 10;
+    }
+
+    function getLeftPositionForCar(element) {
+        return getCenterPositionForCar(element) - getLeftRightStep();
+    }
+
+    function getRightPositionForCar(element) {
+        return getCenterPositionForCar(element) + getLeftRightStep();
+    }
+
+    function getLeftRightStep() {
+        return (window.innerWidth / 5 - 8);
+    }
+
+    let x = getLeftRightStep();
+    let i = 2;
+    function goLeft() {
+        if (i !== 1) {
+            ts.translateByID(-x, 0, "car");
+            i -= 1;
+        }
+    }
+
+    function goRight() {
+        if (i !== 3) {
+            ts.translateByID(x, 0, "car");
+            i += 1;
+        }
+    }
+
+
+</script>
+</body>
+</html>
