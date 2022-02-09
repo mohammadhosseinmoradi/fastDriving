@@ -2,6 +2,6 @@
 
 This is a simple 2D game that runs on a web browser platform.
 
-Developer: Mohammad Hossein Moradi
-initial release: 2022-02-09 - beta version
-stable release: null
+<b>Developer:</b> Mohammad Hossein Moradi <br>
+<b>initial release:</b> 2022-02-09 - beta version <br>
+<b>stable release:</b> null
