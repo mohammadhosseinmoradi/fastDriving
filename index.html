@@ -12,11 +12,17 @@
 
         * {
             font-family: fast-driving;
+            box-sizing: border-box;
+        }
+
+        *:focus {
+            outline: none !important;
         }
 
         body {
             padding: 0;
             margin: 0;
+            overflow: hidden;
         }
 
         #game {
@@ -39,7 +45,7 @@
         #r2 {
         }
 
-        #c, #e1, #e2 {
+        #car, #e1, #e2 {
             position: absolute;
         }
 
@@ -77,12 +83,12 @@
 
         #info-box {
             position: absolute;
-            top: 10px;
+            top: 10%;
             left: 50%;
-            min-width: 300px;
-            transform: translate(-50%, 0);
+            width: 50%;
+            transform: translate(-50%, -50%);
             background-color: rgba(255, 60, 0, 0.8);
-            z-index: 1;
+            z-index: 2;
             text-align: center;
             color: white;
             padding: 10px 20px;
@@ -93,26 +99,270 @@
             border-radius: 10px;
             opacity: 0;
         }
+
+        #level-box {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, 0);
+            color: white;
+            text-align: right;
+            z-index: 1;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: linear-gradient(to bottom, black, transparent);
+        }
+
+        #level-box p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.5);
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #time-left, #level {
+            font-size: 2em;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        #time-left {
+
+        }
+
+        #level {
+
+        }
+
+        #e1, #e2 {
+            left: 5000px;
+        }
+
+        .intro {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url("assets/graphic/Dirt5IceRacer-5.jpg") center/cover no-repeat;
+            z-index: 3;
+            top: 0;
+            transition: 1s ease;
+        }
+
+        .intro .hoverShadow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, black, transparent);
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .form {
+            position: relative;
+            bottom: -80%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            text-align: center;
+            width: 80%;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .intro #full-name {
+            width: 100%;
+            border-radius: 10px;
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            padding: 8px 10px 6px;
+            direction: rtl;
+            transition: 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .intro #full-name:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .intro button {
+            margin: 10px 0 0;
+            padding: 0;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            background-image: linear-gradient(to bottom, blue, purple);
+            transition: 0.6s ease;
+        }
+
+        .intro h1 {
+            margin-bottom: 0;
+        }
+
+        .intro h5 {
+            margin-top: 0;
+        }
+
+        .intro footer {
+            bottom: 0;
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            width: 100%;
+            padding: 10px;
+        }
+
+        button span {
+            padding: 8px 20px;
+            display: inline-block;
+            color: white;
+            background-color: rgba(0, 0, 0, 0);
+            transition: 0.6s ease;
+            direction: rtl;
+        }
+
+        button span:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        .lose-box {
+            text-align: center;
+            direction: rtl;
+            color: white;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        #game-lose {
+            display: none;
+            opacity: 0;
+        }
+
+        .hoverShadowTop {
+            position: absolute;
+            background-image: linear-gradient(to bottom, rgba(128, 0, 128, 0.5), transparent);
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .record-box {
+            direction: rtl;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+            text-align: center;
+        }
+
+        #record, #most-record {
+            font-size: 3em;
+            border: 2px solid purple;
+            border-radius: 10px;
+            padding: 10px 2px 0;
+            background: linear-gradient(to bottom, purple, rgba(128, 0, 128, 0.4), rgba(128, 0, 128, 0.3));
+            box-shadow: 0 2px 12px 4px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            margin-top: 6px;
+            border-bottom: none;
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .col-50 {
+            width: 50%;
+            float: right;
+        }
+
+        .rtl {
+            direction: rtl;
+        }
+
+        #error-box {
+            border: none;
+            border-right: 2px solid rgba(159, 52, 52, 1);
+            text-align: right;
+            padding: 0 10px 0;
+            opacity: 0;
+            height: 0;
+            transition: 0.5s ease;
+            overflow: hidden;
+        }
+
     </style>
 </head>
 <body>
-<div id="info-box">داره میاد</div>
+<audio src="assets/sounds/bgmusic.mp3" autoplay></audio>
+<div id="info-box"></div>
+<div id="level-box">
+    <p>زمان مانده
+        <br><span id="time-left">123</span></p>
+    <p>سطح
+        <br><span id="level">31</span></p>
+</div>
 <div id="game">
     <img id="r1" src="assets/graphic/r1.jpg" alt="Road">
     <img id="r2" src="assets/graphic/r1.jpg" alt="Road">
-    <img id="e1" src="assets/graphic/e2.png" alt="e1">
-    <img id="e2" src="assets/graphic/e2.png" alt="e2">
-    <img id="c" src="assets/graphic/c1.png" alt="My Car">
+    <img id="e1" src="assets/graphic/e2.png" alt="enemy">
+    <img id="e2" src="assets/graphic/e2.png" alt="enemy">
+    <img id="car" src="assets/graphic/c1.png" alt="My Car">
     <button onclick="goLeft()" id="goLeft">&#x2039;</button>
     <button onclick="goRight()" id="goRight">&#x203A;</button>
-    <div>
-        <p></p>
-        <p></p>
+</div>
+
+<div class="intro" id="start-box">
+    <div class="form">
+        <h1>رانندگی سریع</h1>
+        <h5>ورژن: ۱.۲</h5>
+        <label for="full-name"></label>
+        <input required type="text" name="full-name" id="full-name" placeholder="نام و نام خانوادگی">
+        <p class="rtl" id="error-box">این متن خطا هست</p>
+        <button onclick="start()"><span>شروع بازی</span></button>
     </div>
+    <div class="hoverShadow"></div>
+    <footer>طراحی و توسعه: محمد حسین مرادی</footer>
+</div>
+
+<div class="intro" id="game-lose">
+    <span class="hoverShadowTop"></span>
+    <div class="lose-box">
+        <div class="record-box">
+            <div class="row">
+                <div class="col-50"> رکورد شما
+                    <br><span id="record">08</span><br></div>
+                <div class="col-50">
+                    بالا‌ترین رکورد شما
+                    <br><span id="most-record">11</span>
+                </div>
+            </div>
+        </div>
+        <h1>شما باختید</h1>
+        <h5>دوباره تلاش کن، تو می‌تونی رکورد بالاتری رو به نام خودت ثبت کنی.</h5>
+        <button onclick="gameLoseHide()"><span>تلاش دوباره</span></button>
+    </div>
+    <div class="hoverShadow"></div>
+    <footer>طراحی و توسعه: محمد حسین مرادی</footer>
 </div>
 
 
 <script>
+    let baseURL = window.location.origin + "/fast-driving/";
+
     // Library -------------------------------------------------------------------------------------------
     class MotionElement {
         element;
@@ -135,6 +385,14 @@
 
         getY() {
             return this.element.offsetTop;
+        }
+
+        offsetHeight() {
+            return this.element.offsetHeight;
+        }
+
+        offsetWidth() {
+            return this.element.offsetWidth;
         }
 
     }
@@ -273,12 +531,14 @@
 
     // Objects definition in game ----------------------------------------------------------------------------
     let gameBar = document.getElementById("game");
-    let car = document.getElementById("c");
+    let car = document.getElementById("car");
     let r1 = document.getElementById("r1");
     let r2 = document.getElementById("r2");
     let e1 = document.getElementById("e1");
     let e2 = document.getElementById("e2");
     let infoBox = document.getElementById("info-box");
+    let timeLeft = document.getElementById("time-left");
+    let level = document.getElementById("level");
 
     // Motion objects definition in game ----------------------------------------------------------------------
     let motionCar = new MotionElement(car);
@@ -295,25 +555,28 @@
     ts.addTransformObject(motionE1, "e1");
     ts.addTransformObject(motionE2, "e2");
 
-    // Play library function  --------------------------------------------------------------------------------
-    runPerFrame();
-
-    function runPerFrame() {
-        ts.runPerFrame();
-        setTimeout(runPerFrame, 1);
-    }
-
     // step value for move per frame.
-    let speedStep = 100;
+    let speedStep = 30;
     // counter for level design.
-    let counter = 1000;
+    let counter = 200;
     // Game level.
-    let level = 0;
+    let gameLevel = 1;
+    // if true game play.
+    let playGame = true;
+    // if true collision not work.
+    let ghost = false;
+    // For save your leve.
+    let record = 1;
+    // For save your most level.
+    let mostRecord = 1;
 
     // play function for play game.
     function play() {
         // moving my car.
         ts.translateByIDAndSpeed(0, -speedStep, "car", 5);
+        // moving enemy.
+        ts.translateByIDAndSpeed(0, -speedStep / 1.2, "e1", 5);
+        ts.translateByIDAndSpeed(0, -speedStep / 1.2, "e2", 5);
         // Camera simulation.
         ts.translateBySpeed(0, speedStep, 1);
 
@@ -328,34 +591,109 @@
         // Initializing enemy
         enemyInits();
 
-        setTimeout(play, 50);
+        // Levels
+        levelTiming();
+
+        if (playGame)
+            setTimeout(play, 50);
     }
 
     // enemyInits function for initials enemy.
     function enemyInits() {
-        let random = Math.floor(Math.random() * 25);
+        let random = Math.floor(Math.random() * 10);
+        if (random === 5) {
+            enemyInit(motionE1);
+        } else if (random === 7) {
+            enemyInit(motionE2);
+        } else {
+            let result = enemyInit(motionE1, "none");
+            enemyInit(motionE2, result);
+        }
+    }
 
-        if (random === 10) {
-            if (motionE1.getY() > window.innerHeight + 1000) {
-                let random2 = Math.floor(Math.random() * 10);
-                //center
-                if (random2 === 5) {
-                    motionE1.setX(getCenterPositionForCar(e1));
-                    motionE1.setY(-e1.offsetHeight - 1000);
-                    showInfo("از وسط داره میاد");
-                }
-                //left
-                if (random2 === 2) {
-                    motionE1.setX(getLeftPositionForCar(e1));
-                    motionE1.setY(-e1.offsetHeight - 1000);
-                    showInfo("از چپ داره میاد");
-                }
-                //right
-                if (random2 === 7) {
-                    motionE1.setX(getRightPositionForCar(e1));
-                    motionE1.setY(-e1.offsetHeight - 1000);
-                    showInfo("از راست داره میاد");
-                }
+    function enemyInit(motionElement, reservedPosition) {
+        if (motionElement.getY() > window.innerHeight + 200) {
+            let random = Math.floor(Math.random() * 100);
+            //center
+            if (random === 1 && reservedPosition !== "center") {
+                setEnemyPosition(motionElement, "center");
+                showInfo("از وسط");
+                return "center";
+            }
+            //left
+            else if (random === 2 && reservedPosition !== "left") {
+                setEnemyPosition(motionElement, "left");
+                showInfo("از چپ");
+                return "left";
+            }
+            //right
+            else if (random === 3 && reservedPosition !== "right") {
+                setEnemyPosition(motionElement, "right");
+                showInfo("از راست");
+                return "right";
+            }
+        }
+    }
+
+    function setEnemyPosition(motionElement, leftCenterRight) {
+        if (leftCenterRight === "center") {
+            motionElement.setX(getCenterPositionForCar(motionElement));
+            motionElement.setY(-motionElement.offsetHeight() - 200);
+        } else if (leftCenterRight === "left") {
+            motionElement.setX(getLeftPositionForCar(motionElement) - 5);
+            motionElement.setY(-motionElement.offsetHeight() - 200);
+        } else if (leftCenterRight === "right") {
+            motionElement.setX(getRightPositionForCar(motionElement) + 5);
+            motionElement.setY(-motionElement.offsetHeight() - 200);
+        }
+    }
+
+
+    function levelTiming() {
+        level.innerHTML = gameLevel.toString();
+        timeLeft.innerHTML = counter.toString();
+
+        if (counter === 0) {
+            counter = 50;
+            gameLevel++;
+            speedStep += 10;
+        }
+
+
+        counter--;
+    }
+
+    function collision(elementA, elementB) {
+        let closer = 30;
+        // Left top corner
+        let xA = elementA.offsetLeft + closer;
+        let xB = elementB.offsetLeft + closer;
+        let yA = elementA.offsetTop + closer;
+        let yB = elementB.offsetTop + closer;
+
+        // Right bottom corner
+        let xA2 = xA + elementA.offsetWidth - closer;
+        let xB2 = xB + elementB.offsetWidth - closer;
+        let yA2 = yA + elementA.offsetHeight - closer;
+        let yB2 = yB + elementB.offsetHeight - closer;
+
+        // x axis
+        if (xB <= xA2 && xB2 >= xA) {
+            // y axis
+            if (yB <= yA2 && yB2 >= yA) {
+                // collision is true.
+                playGame = false;
+                gameLoseShow();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function collisionTest() {
+        if (playGame && !ghost) {
+            if (collision(e1, car) || collision(e2, car)) {
+                playGame = false;
             }
         }
     }
@@ -381,35 +719,36 @@
 
     // Initialising objects in game.
     function initials() {
+        // Setting gameBar (Frame or window) height.
         gameBar.style.height = window.innerHeight + "px";
 
+        // Setting the roads
         r2.style.top = -r2.offsetHeight + 10 + "px";
 
+        // Setting my racing car.
         car.style.width = gameBar.offsetWidth / 5 + "px";
         car.style.top = window.innerHeight - (8 / (100 / window.innerHeight)) - (car.offsetHeight) + "px";
-        motionCar.setX(getCenterPositionForCar(car));
+        motionCar.setX(getCenterPositionForCar(motionCar));
 
-
-        e1.style.width = gameBar.offsetWidth / 5 + 15 + "px";
-        e2.style.width = gameBar.offsetWidth / 5 + 15 + "px";
-        motionE1.setY(window.innerHeight);
-        motionE2.setY(window.innerHeight);
-
-        // Start the game.
-        play();
+        // Setting car width and first position
+        e1.style.width = car.offsetWidth.toString() + "px";
+        e2.style.width = car.offsetWidth.toString() + "px";
+        motionE1.setY(window.innerHeight + 2000);
+        motionE2.setY(window.innerHeight + 2000);
     }
+
 
     // Getting suitable position for car object.
-    function getCenterPositionForCar(carElement) {
-        return (window.innerWidth / 2) - carElement.offsetWidth / 2 - 10;
+    function getCenterPositionForCar(motionElement) {
+        return (window.innerWidth / 2) - motionElement.offsetWidth() / 2 - 5;
     }
 
-    function getLeftPositionForCar(carElement) {
-        return getCenterPositionForCar(carElement) - getLeftRightStep();
+    function getLeftPositionForCar(motionElement) {
+        return getCenterPositionForCar(motionElement) - getLeftRightStep() + 5;
     }
 
-    function getRightPositionForCar(carElement) {
-        return getCenterPositionForCar(carElement) + getLeftRightStep();
+    function getRightPositionForCar(motionElement) {
+        return getCenterPositionForCar(motionElement) + getLeftRightStep() + 5;
     }
 
     // Getting left or right step space for move object.
@@ -423,17 +762,131 @@
     let carPosition = 2;
 
     function goLeft() {
-        if (carPosition !== 1) {
+        if (carPosition !== 1 && playGame) {
             ts.translateByID(-leftRightStep, 0, "car");
             carPosition -= 1;
         }
     }
 
     function goRight() {
-        if (carPosition !== 3) {
+        if (carPosition !== 3 && playGame) {
             ts.translateByID(leftRightStep, 0, "car");
             carPosition += 1;
         }
+    }
+
+    // Play library function  --------------------------------------------------------------------------------
+    runPerFrame();
+
+    function runPerFrame() {
+        ts.runPerFrame();
+        collisionTest();
+        setTimeout(runPerFrame, 1);
+    }
+
+    // ----------------------------------------------------------------------------------------
+
+    // For showing error on start box.
+    function showStartError(errorText) {
+        let errorBox = document.getElementById("error-box");
+        errorBox.innerHTML = errorText;
+        errorBox.style.height = "auto";
+        let ff = errorBox.offsetHeight;
+        errorBox.style.height = "0px";
+        errorBox.style.display = "block";
+        setTimeout(function () {
+            errorBox.style.opacity = "1";
+            errorBox.style.height = ff + "px";
+
+            setTimeout(function () {
+                errorBox.style.height = "auto";
+            }, 1000);
+
+        }, 500);
+    }
+
+    // initializing settings for play game.
+    function start() {
+        let fullNameBox = document.getElementById("full-name");
+        if (fullNameBox.value.length === 0) {
+            showStartError("قربونت بشم کهرم، اسمت وارد کو.");
+            return;
+        }
+
+        // store full name in database
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                if (this.responseText !== "1") {
+                    showStartError("خطایی از سوی سرور رخ داده است.");
+                } else {
+                    // Hiding start box.
+                    let startBox = document.getElementById("start-box");
+                    startBox.style.opacity = "0";
+                    startBox.style.transform = "scale(1.1)";
+                    setTimeout(function () {
+                        startBox.style.display = "none";
+                    }, 1000);
+
+                    // Run game.
+                    play();
+                }
+            }
+        };
+        let request = baseURL + "store.php?name=" + fullNameBox.value.toString();
+        xhttp.open('GET', request, true);
+        xhttp.send();
+    }
+
+
+    function gameLoseShow() {
+        let gameLoseBox = document.getElementById("game-lose");
+        gameLoseBox.style.display = "block";
+        gameLoseBox.style.transform = "scale(2)";
+        // for collision not work.
+        ghost = true;
+
+        // Storing records
+        record = level.innerHTML;
+        if (record > mostRecord)
+            mostRecord = record;
+
+        // Set records value to element.
+        document.getElementById("record").innerHTML = record.toString();
+        document.getElementById("most-record").innerHTML = mostRecord.toString();
+
+        setTimeout(function () {
+            gameLoseBox.style.opacity = "1";
+            gameLoseBox.style.transform = "scale(1)";
+        }, 2000);
+    }
+
+    function gameLoseHide() {
+        let gameLoseBox = document.getElementById("game-lose");
+        gameLoseBox.style.opacity = "0";
+        gameLoseBox.style.transform = "scale(2)";
+
+        setTimeout(function () {
+            gameLoseBox.style.display = "none";
+            setDefault();
+            playGame = true;
+            play();
+
+            // ghost is false after three second.
+            setTimeout(function () {
+                ghost = false;
+            }, 3000)
+        }, 2000);
+    }
+
+    function setDefault() {
+        // step value for move per frame.
+        speedStep = 30;
+        // counter for level design.
+        counter = 100;
+        // Game level.
+        gameLevel = 1;
+        playGame = true;
     }
 
 
