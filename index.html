@@ -52,7 +52,7 @@
             border: none;
             color: white;
             transition: 0.2s ease;
-            font-size: 1.2em;
+            font-size: 2em;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
@@ -103,13 +103,17 @@
     <img id="e1" src="assets/graphic/e2.png" alt="e1">
     <img id="e2" src="assets/graphic/e2.png" alt="e2">
     <img id="c" src="assets/graphic/c1.png" alt="My Car">
-    <button onclick="goLeft()" id="goLeft">چپ</button>
-    <button onclick="goRight()" id="goRight">راست</button>
+    <button onclick="goLeft()" id="goLeft">&#x2039;</button>
+    <button onclick="goRight()" id="goRight">&#x203A;</button>
+    <div>
+        <p></p>
+        <p></p>
+    </div>
 </div>
 
 
 <script>
-
+    // Library -------------------------------------------------------------------------------------------
     class MotionElement {
         element;
 
@@ -142,7 +146,7 @@
         stepY = 0;
         updateX = 0;
         updateY = 0;
-        speed = 10;
+        speed = 1;
         id;
         timer = false;
         motionElement;
@@ -200,6 +204,14 @@
             this.frame();
         }
 
+        translateBySpeed(updateX, updateY, speed) {
+            this.speed = speed;
+            this.updateX += updateX;
+            this.updateY += updateY;
+            this.timer = true;
+            this.frame();
+        }
+
     }
 
     class Transforms {
@@ -228,12 +240,26 @@
             }
         }
 
+        translateBySpeed(updateX, updateY, speed) {
+            for (let i = 0; i < this.index; i++) {
+                this.TransformObjects[i].translateBySpeed(updateX, updateY, speed);
+            }
+        }
+
         translateByID(updateX, updateY, id) {
             for (let i = 0; i < this.index; i++) {
                 if (this.TransformObjects[i].getID() === id)
                     this.TransformObjects[i].translate(updateX, updateY);
             }
         }
+
+        translateByIDAndSpeed(updateX, updateY, id, speed) {
+            for (let i = 0; i < this.index; i++) {
+                if (this.TransformObjects[i].getID() === id)
+                    this.TransformObjects[i].translateBySpeed(updateX, updateY, speed);
+            }
+        }
+
 
         runPerFrame() {
             for (let i = 0; i < this.index; i++) {
@@ -244,22 +270,24 @@
         }
     }
 
+
+    // Objects definition in game ----------------------------------------------------------------------------
     let gameBar = document.getElementById("game");
     let car = document.getElementById("c");
     let r1 = document.getElementById("r1");
     let r2 = document.getElementById("r2");
     let e1 = document.getElementById("e1");
     let e2 = document.getElementById("e2");
-
     let infoBox = document.getElementById("info-box");
 
-
+    // Motion objects definition in game ----------------------------------------------------------------------
     let motionCar = new MotionElement(car);
     let motionR1 = new MotionElement(r1);
     let motionR2 = new MotionElement(r2);
     let motionE1 = new MotionElement(e1);
     let motionE2 = new MotionElement(e2);
 
+    // Transforms object definition ----------------------------------------------------------------------------
     let ts = new Transforms(5);
     ts.addTransformObject(motionCar, "car");
     ts.addTransformObject(motionR1, "r1");
@@ -267,6 +295,7 @@
     ts.addTransformObject(motionE1, "e1");
     ts.addTransformObject(motionE2, "e2");
 
+    // Play library function  --------------------------------------------------------------------------------
     runPerFrame();
 
     function runPerFrame() {
@@ -274,14 +303,21 @@
         setTimeout(runPerFrame, 1);
     }
 
-    let replace = false;
-
-    let speedStep = 10;
+    // step value for move per frame.
+    let speedStep = 100;
+    // counter for level design.
     let counter = 1000;
-    function run() {
-        ts.translateByID(0, -speedStep, "car");
-        ts.translate(0, speedStep);
+    // Game level.
+    let level = 0;
 
+    // play function for play game.
+    function play() {
+        // moving my car.
+        ts.translateByIDAndSpeed(0, -speedStep, "car", 5);
+        // Camera simulation.
+        ts.translateBySpeed(0, speedStep, 1);
+
+        // Road simulation.
         if (motionR1.getY() >= window.innerHeight) {
             motionR1.setY(motionR2.getY() - r1.offsetHeight + 10);
         }
@@ -289,7 +325,14 @@
             motionR2.setY(motionR1.getY() - r2.offsetHeight + 10);
         }
 
-        // enemy initials
+        // Initializing enemy
+        enemyInits();
+
+        setTimeout(play, 50);
+    }
+
+    // enemyInits function for initials enemy.
+    function enemyInits() {
         let random = Math.floor(Math.random() * 25);
 
         if (random === 10) {
@@ -299,41 +342,44 @@
                 if (random2 === 5) {
                     motionE1.setX(getCenterPositionForCar(e1));
                     motionE1.setY(-e1.offsetHeight - 1000);
-                    showInfo();
+                    showInfo("از وسط داره میاد");
                 }
                 //left
                 if (random2 === 2) {
                     motionE1.setX(getLeftPositionForCar(e1));
                     motionE1.setY(-e1.offsetHeight - 1000);
-                    showInfo();
+                    showInfo("از چپ داره میاد");
                 }
                 //right
                 if (random2 === 7) {
                     motionE1.setX(getRightPositionForCar(e1));
                     motionE1.setY(-e1.offsetHeight - 1000);
-                    showInfo();
+                    showInfo("از راست داره میاد");
                 }
             }
         }
-
-        counter--;
-        setTimeout(run, 1);
     }
 
-
-    window.addEventListener('DOMContentLoaded', (event) => {
-        setTimeout(initials, 1000);
-    });
-
-    function showInfo() {
+    // Showing message text on top.
+    function showInfo(messageText) {
         infoBox.style.opacity = "1";
+        infoBox.innerHTML = messageText;
+        // hiding message box after specified time.
         setTimeout(hideInfo, 2000);
     }
 
+    // Hiding message text on top.
     function hideInfo() {
         infoBox.style.opacity = "0";
     }
 
+    // Document loaded.
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // when document fully loaded initialises game objects.
+        setTimeout(initials, 1000);
+    });
+
+    // Initialising objects in game.
     function initials() {
         gameBar.style.height = window.innerHeight + "px";
 
@@ -344,43 +390,49 @@
         motionCar.setX(getCenterPositionForCar(car));
 
 
-        e1.style.width = gameBar.offsetWidth / 5 + 30 + "px";
-        e2.style.width = gameBar.offsetWidth / 5 + 30 + "px";
+        e1.style.width = gameBar.offsetWidth / 5 + 15 + "px";
+        e2.style.width = gameBar.offsetWidth / 5 + 15 + "px";
         motionE1.setY(window.innerHeight);
         motionE2.setY(window.innerHeight);
 
-        run();
+        // Start the game.
+        play();
     }
 
-    function getCenterPositionForCar(element) {
-        return (window.innerWidth / 2) - element.offsetWidth / 2 - 10;
+    // Getting suitable position for car object.
+    function getCenterPositionForCar(carElement) {
+        return (window.innerWidth / 2) - carElement.offsetWidth / 2 - 10;
     }
 
-    function getLeftPositionForCar(element) {
-        return getCenterPositionForCar(element) - getLeftRightStep();
+    function getLeftPositionForCar(carElement) {
+        return getCenterPositionForCar(carElement) - getLeftRightStep();
     }
 
-    function getRightPositionForCar(element) {
-        return getCenterPositionForCar(element) + getLeftRightStep();
+    function getRightPositionForCar(carElement) {
+        return getCenterPositionForCar(carElement) + getLeftRightStep();
     }
 
+    // Getting left or right step space for move object.
     function getLeftRightStep() {
         return (window.innerWidth / 5 - 8);
     }
 
-    let x = getLeftRightStep();
-    let i = 2;
+    // left or right step space
+    let leftRightStep = getLeftRightStep();
+    // For store my car position (Left = 1, Middle = 2, Right = 3).
+    let carPosition = 2;
+
     function goLeft() {
-        if (i !== 1) {
-            ts.translateByID(-x, 0, "car");
-            i -= 1;
+        if (carPosition !== 1) {
+            ts.translateByID(-leftRightStep, 0, "car");
+            carPosition -= 1;
         }
     }
 
     function goRight() {
-        if (i !== 3) {
-            ts.translateByID(x, 0, "car");
-            i += 1;
+        if (carPosition !== 3) {
+            ts.translateByID(leftRightStep, 0, "car");
+            carPosition += 1;
         }
     }
 
