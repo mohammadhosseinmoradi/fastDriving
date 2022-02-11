@@ -4,320 +4,9 @@
     <title>Fast Driving</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        @font-face {
-            font-family: "fast-driving";
-            src: url("assets/graphic/f01.ttf");
-        }
-
-        * {
-            font-family: fast-driving;
-            box-sizing: border-box;
-        }
-
-        *:focus {
-            outline: none !important;
-        }
-
-        body {
-            padding: 0;
-            margin: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: 0.3s ease;
-        }
-
-        #game {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 1);
-            opacity: 0;
-            transition: 0.3s ease;
-        }
-
-        #r1, #r2 {
-            position: absolute;
-            width: 100%;
-            height: auto;
-        }
-
-        #r1 {
-            top: 0;
-        }
-
-        #r2 {
-        }
-
-        #car, #e1, #e2 {
-            position: absolute;
-        }
-
-        #goLeft, #goRight {
-            width: 80px;
-            height: 80px;
-            position: absolute;
-            background-color: rgba(0, 13, 255, 0.8);
-            border-radius: 100%;
-            border: none;
-            color: white;
-            transition: 0.2s ease;
-            font-size: 2em;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        #goLeft {
-            bottom: 10%;
-            left: 10px;
-        }
-
-        #goRight {
-            bottom: 10%;
-            right: 10px;
-        }
-
-        #goLeft:hover, #goRight:hover {
-            background-color: orangered;
-            transform: scale(1.5);
-        }
-
-        #goLeft:focus, #goRight:focus {
-            outline: none;
-        }
-
-        #info-box {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            width: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 60, 0, 0.8);
-            z-index: 2;
-            text-align: center;
-            color: white;
-            padding: 10px 20px;
-            box-sizing: border-box;
-            font-size: 1.2em;
-            transition: 0.3s ease;
-            margin: 5px;
-            border-radius: 10px;
-            opacity: 0;
-        }
-
-        #level-box {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translate(-50%, 0);
-            color: white;
-            text-align: right;
-            z-index: 1;
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            background-image: linear-gradient(to bottom, black, transparent);
-        }
-
-        #level-box p {
-            margin: 0;
-            color: rgba(255, 255, 255, 0.5);
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        #time-left, #level {
-            font-size: 2em;
-            color: rgba(255, 255, 255, 1);
-        }
-
-        #time-left {
-
-        }
-
-        #level {
-
-        }
-
-        #e1, #e2 {
-            left: 5000px;
-        }
-
-        .intro {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url("assets/graphic/Dirt5IceRacer-5.jpg") center/cover no-repeat;
-            z-index: 3;
-            top: 0;
-            transition: 1s ease;
-        }
-
-        .intro .hoverShadow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, black, transparent);
-            bottom: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        .form {
-            position: relative;
-            bottom: -80%;
-            left: 50%;
-            transform: translate(-50%, -100%);
-            text-align: center;
-            width: 80%;
-            color: white;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-        }
-
-        .intro #full-name {
-            width: 100%;
-            border-radius: 10px;
-            border: none;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-            background-color: rgba(255, 255, 255, 0.05);
-            color: white;
-            padding: 8px 10px 6px;
-            direction: rtl;
-            transition: 0.2s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .intro #full-name:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .intro button {
-            margin: 10px 0 0;
-            padding: 0;
-            border: none;
-            border-radius: 10px;
-            overflow: hidden;
-            background-image: linear-gradient(to bottom, blue, purple);
-            transition: 0.6s ease;
-        }
-
-        .intro h1 {
-            margin-bottom: 0;
-        }
-
-        .intro h5 {
-            margin-top: 0;
-        }
-
-        .intro footer {
-            bottom: 0;
-            position: absolute;
-            color: rgba(255, 255, 255, 0.5);
-            text-align: center;
-            width: 100%;
-            padding: 10px;
-        }
-
-        button span {
-            padding: 8px 20px;
-            display: inline-block;
-            color: white;
-            background-color: rgba(0, 0, 0, 0);
-            transition: 0.6s ease;
-            direction: rtl;
-        }
-
-        button span:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        button:hover {
-            transform: scale(1.1);
-        }
-
-        .lose-box {
-            text-align: center;
-            direction: rtl;
-            color: white;
-            position: relative;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-        }
-
-        #game-lose {
-            display: none;
-            opacity: 0;
-        }
-
-        .hoverShadowTop {
-            position: absolute;
-            background-image: linear-gradient(to bottom, rgba(128, 0, 128, 0.5), transparent);
-            color: rgba(255, 255, 255, 0.9);
-            text-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-
-        .record-box {
-            direction: rtl;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 0;
-            text-align: center;
-        }
-
-        #record, #most-record {
-            font-size: 3em;
-            border: 2px solid purple;
-            border-radius: 10px;
-            padding: 10px 2px 0;
-            background: linear-gradient(to bottom, purple, rgba(128, 0, 128, 0.4), rgba(128, 0, 128, 0.3));
-            box-shadow: 0 2px 12px 4px rgba(0, 0, 0, 0.2);
-            display: inline-block;
-            margin-top: 6px;
-            border-bottom: none;
-            text-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        .col-50 {
-            width: 50%;
-            float: right;
-        }
-
-        .rtl {
-            direction: rtl;
-        }
-
-        #error-box {
-            border: none;
-            border-right: 2px solid rgba(159, 52, 52, 1);
-            text-align: right;
-            padding: 0 10px 0;
-            opacity: 0;
-            height: 0;
-            transition: 0.5s ease;
-            overflow: hidden;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body id="body">
-<audio controls autoplay loop>
-    <source src="assets/sounds/bgmusic.mp3" type="audio/ogg">
-    <embed src="assets/sounds/bgmusic.mp3" autostart="true" loop="true" hidden="true">
-</audio>
 <div id="info-box"></div>
 <div id="level-box">
     <p>زمان مانده
@@ -331,14 +20,14 @@
     <img id="e1" src="assets/graphic/e2.png" alt="enemy">
     <img id="e2" src="assets/graphic/e2.png" alt="enemy">
     <img id="car" src="assets/graphic/c1.png" alt="My Car">
-    <button onclick="goLeft()" id="goLeft">&#x2039;</button>
-    <button onclick="goRight()" id="goRight">&#x203A;</button>
+    <img alt="left" src="assets/graphic/arrow-alt-circle-left.svg" onclick="goLeft()" id="goLeft">
+    <img alt="right" src="assets/graphic/arrow-alt-circle-right.svg" onclick="goRight()" id="goRight">
 </div>
 
 <div class="intro" id="start-box">
     <div class="form">
         <h1>رانندگی سریع</h1>
-        <h5>ورژن: ۱.۳</h5>
+        <h5>ورژن: ۱.۴</h5>
         <label for="full-name"></label>
         <input required type="text" name="full-name" id="full-name" placeholder="نام و نام خانوادگی">
         <p class="rtl" id="error-box">این متن خطا هست</p>
@@ -550,6 +239,7 @@
     let timeLeft = document.getElementById("time-left");
     let level = document.getElementById("level");
 
+
     // Motion objects definition in game ----------------------------------------------------------------------
     let motionCar = new MotionElement(car);
     let motionR1 = new MotionElement(r1);
@@ -565,10 +255,15 @@
     ts.addTransformObject(motionE1, "e1");
     ts.addTransformObject(motionE2, "e2");
 
+    // Add transform object only for left or right moveation.
+    let carLR = new TransformObject(motionCar, "car");
+
     // step value for move per frame.
     let speedStep = 30;
+    // store step for counter.
+    let counterStep = 20;
     // counter for level design.
-    let counter = 200;
+    let counter = counterStep;
     // Game level.
     let gameLevel = 1;
     // if true game play.
@@ -579,6 +274,8 @@
     let record = 1;
     // For save your most level.
     let mostRecord = 1;
+    // For storing speed of car for left and right movement.
+    let carLRSpeed = 1;
 
     // play function for play game.
     function play() {
@@ -667,13 +364,17 @@
 
 
     function levelTiming() {
+        // Showing level on screen.
         level.innerHTML = gameLevel.toString();
         timeLeft.innerHTML = counter.toString();
 
+
         if (counter === 0) {
-            counter = 50;
+            counterStep += 20;
+            counter = counterStep;
             gameLevel++;
             speedStep += 10;
+            carLRSpeed = speedStep / 30;
         }
 
 
@@ -782,14 +483,14 @@
 
     function goLeft() {
         if (carPosition !== 1 && playGame) {
-            ts.translateByID(-leftRightStep, 0, "car");
+            carLR.translateBySpeed(-leftRightStep, 0, carLRSpeed);
             carPosition -= 1;
         }
     }
 
     function goRight() {
         if (carPosition !== 3 && playGame) {
-            ts.translateByID(leftRightStep, 0, "car");
+            carLR.translateBySpeed(leftRightStep, 0, carLRSpeed);
             carPosition += 1;
         }
     }
@@ -800,6 +501,7 @@
     function runPerFrame() {
         ts.runPerFrame();
         collisionTest();
+        carLR.frame();
         setTimeout(runPerFrame, 1);
     }
 
@@ -828,7 +530,7 @@
     function start() {
         let fullNameBox = document.getElementById("full-name");
         if (fullNameBox.value.length === 0) {
-            showStartError("قربونت بشم کهرم، اسمت وارد کو.");
+            showStartError("نام خود را وارد نکرده‌اید!");
             return;
         }
 
@@ -905,11 +607,14 @@
     function setDefault() {
         // step value for move per frame.
         speedStep = 30;
+        // Store counter step.
+        counterStep = 20;
         // counter for level design.
-        counter = 100;
+        counter = counterStep;
         // Game level.
         gameLevel = 1;
         playGame = true;
+        carLRSpeed = 1;
     }
 
 
