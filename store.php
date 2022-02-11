@@ -1,8 +1,8 @@
 <?php
-$mysql_server = "localhost";
-$mysql_database = "fast_driving";
-$mysql_username = "root";
-$mysql_password = "";
+$mysql_server = "sql204.pergig.ir";
+$mysql_database = "pergi_31040142_fast_driving";
+$mysql_username = "pergi_31040142";
+$mysql_password = "673opspx2zZ";
 
 $connection = null;
 

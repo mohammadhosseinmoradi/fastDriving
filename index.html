@@ -23,6 +23,8 @@
             padding: 0;
             margin: 0;
             overflow: hidden;
+            opacity: 0;
+            transition: 0.3s ease;
         }
 
         #game {
@@ -30,6 +32,8 @@
             overflow: hidden;
             width: 100%;
             background-color: rgba(0, 0, 0, 1);
+            opacity: 0;
+            transition: 0.3s ease;
         }
 
         #r1, #r2 {
@@ -304,10 +308,16 @@
             overflow: hidden;
         }
 
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
-<body>
-<audio src="assets/sounds/bgmusic.mp3" autoplay></audio>
+<body id="body">
+<audio controls autoplay loop>
+    <source src="assets/sounds/bgmusic.mp3" type="audio/ogg">
+    <embed src="assets/sounds/bgmusic.mp3" autostart="true" loop="true" hidden="true">
+</audio>
 <div id="info-box"></div>
 <div id="level-box">
     <p>زمان مانده
@@ -328,7 +338,7 @@
 <div class="intro" id="start-box">
     <div class="form">
         <h1>رانندگی سریع</h1>
-        <h5>ورژن: ۱.۲</h5>
+        <h5>ورژن: ۱.۳</h5>
         <label for="full-name"></label>
         <input required type="text" name="full-name" id="full-name" placeholder="نام و نام خانوادگی">
         <p class="rtl" id="error-box">این متن خطا هست</p>
@@ -351,7 +361,7 @@
                 </div>
             </div>
         </div>
-        <h1>شما باختید</h1>
+        <h1>ماشالله دست فرمون</h1>
         <h5>دوباره تلاش کن، تو می‌تونی رکورد بالاتری رو به نام خودت ثبت کنی.</h5>
         <button onclick="gameLoseHide()"><span>تلاش دوباره</span></button>
     </div>
@@ -361,7 +371,7 @@
 
 
 <script>
-    let baseURL = window.location.origin + "/fast-driving/";
+    let baseURL = window.location.origin + "/";
 
     // Library -------------------------------------------------------------------------------------------
     class MotionElement {
@@ -602,12 +612,19 @@
     function enemyInits() {
         let random = Math.floor(Math.random() * 10);
         if (random === 5) {
-            enemyInit(motionE1);
+            if (motionE2.getY() > window.innerHeight / 3) {
+                enemyInit(motionE1, "");
+            }
         } else if (random === 7) {
-            enemyInit(motionE2);
+            if (motionE1.getY() > window.innerHeight / 3) {
+                enemyInit(motionE2, "");
+            }
+
         } else {
-            let result = enemyInit(motionE1, "none");
-            enemyInit(motionE2, result);
+            if (motionE2.getY() > window.innerHeight / 3) {
+                let result = enemyInit(motionE1, "none");
+                enemyInit(motionE2, result);
+            }
         }
     }
 
@@ -617,19 +634,19 @@
             //center
             if (random === 1 && reservedPosition !== "center") {
                 setEnemyPosition(motionElement, "center");
-                showInfo("از وسط");
+                showInfo("وسط");
                 return "center";
             }
             //left
             else if (random === 2 && reservedPosition !== "left") {
                 setEnemyPosition(motionElement, "left");
-                showInfo("از چپ");
+                showInfo("چپ");
                 return "left";
             }
             //right
             else if (random === 3 && reservedPosition !== "right") {
                 setEnemyPosition(motionElement, "right");
-                showInfo("از راست");
+                showInfo("راست");
                 return "right";
             }
         }
@@ -641,10 +658,10 @@
             motionElement.setY(-motionElement.offsetHeight() - 200);
         } else if (leftCenterRight === "left") {
             motionElement.setX(getLeftPositionForCar(motionElement) - 5);
-            motionElement.setY(-motionElement.offsetHeight() - 200);
+            motionElement.setY(-motionElement.offsetHeight() - 210);
         } else if (leftCenterRight === "right") {
             motionElement.setX(getRightPositionForCar(motionElement) + 5);
-            motionElement.setY(-motionElement.offsetHeight() - 200);
+            motionElement.setY(-motionElement.offsetHeight() - 320);
         }
     }
 
@@ -714,7 +731,7 @@
     // Document loaded.
     window.addEventListener('DOMContentLoaded', (event) => {
         // when document fully loaded initialises game objects.
-        setTimeout(initials, 1000);
+        initials();
     });
 
     // Initialising objects in game.
@@ -735,6 +752,8 @@
         e2.style.width = car.offsetWidth.toString() + "px";
         motionE1.setY(window.innerHeight + 2000);
         motionE2.setY(window.innerHeight + 2000);
+
+        document.getElementById("body").style.opacity = "1";
     }
 
 
@@ -820,6 +839,9 @@
                 if (this.responseText !== "1") {
                     showStartError("خطایی از سوی سرور رخ داده است.");
                 } else {
+                    // Setting game objects.
+                    initials();
+
                     // Hiding start box.
                     let startBox = document.getElementById("start-box");
                     startBox.style.opacity = "0";
@@ -828,6 +850,7 @@
                         startBox.style.display = "none";
                     }, 1000);
 
+                    gameBar.style.opacity = "1";
                     // Run game.
                     play();
                 }
@@ -847,7 +870,7 @@
         ghost = true;
 
         // Storing records
-        record = level.innerHTML;
+        record = parseInt(level.innerHTML);
         if (record > mostRecord)
             mostRecord = record;
 
